@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Мое веб-приложение</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    h1 { color: #333; }
+    #data { margin-top: 20px; }
+  </style>
+</head>
+<body>
+  <h1>Добро пожаловать в мое веб-приложение</h1>
+  <p>Ниже будут отображаться данные из базы данных:</p>
+  <div id="data">Загрузка данных...</div>
+
+  <!-- Скрипт для получения данных -->
+  <script>
+    // Замените URL на адрес вашего сервера, который будет отдавать данные из MySQL
+    const apiUrl = 'https://example.com/get_data.php';
+
+    fetch(apiUrl)
+      .then(response => response.json())
+      .then(data => {
+        const dataDiv = document.getElementById('data');
+        dataDiv.innerHTML = '';
+        if (data.length === 0) {
+          dataDiv.innerHTML = '<p>Нет данных для отображения</p>';
+        } else {
+          // Выводим данные в виде списка
+          const ul = document.createElement('ul');
+          data.forEach(item => {
+            const li = document.createElement('li');
+            li.textContent = `ID: ${item.id}, Имя: ${item.name}, Email: ${item.email}`;
+            ul.appendChild(li);
+          });
+          dataDiv.appendChild(ul);
+        }
+      })
+      .catch(error => {
+        document.getElementById('data').innerHTML = '<p>Ошибка при получении данных</p>';
+        console.error('Ошибка:', error);
+      });
+  </script>
+</body>
+</html>
